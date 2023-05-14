@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Layout from '../../components/layout';
 import { useRouter } from 'next/router';
 import useSwr from 'swr'
+import ScheduleList from '../../components/scheduleList';
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
@@ -18,6 +19,9 @@ export default function Coach() {
         <Layout>
             <h1>Coach {data.name}'s Upcoming Schedule</h1>
             <Link href="/" >Back to App Home</Link>
+
+            <h3>Here are all your appointments:</h3>
+            <ScheduleList coachId={query.id} />
         </Layout>
     );
 }
