@@ -14,10 +14,12 @@ export type Student = {
 export type Appointment = {
     id: number
     coach: Coach
+    coachId: number
     status: string
-    student: Student
+    student?: Student
+    studentId?: number
     startTime: Date
     endTime: Date
-    satisfactionScore: number
-    notes: string
+    satisfactionScore?: number
+    notes?: string
 }

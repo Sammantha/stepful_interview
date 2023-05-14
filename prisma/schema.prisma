@@ -13,16 +13,16 @@ datasource db {
 }
 
 model Coach {
-  id        Int     @id @default(autoincrement())
-  name      String
-  appointments         Appointment[]
+  id              Int     @id @default(autoincrement())
+  name            String
+  appointments    Appointment[]
 }
 
 model Student {
   id            Int       @id @default(autoincrement())
   name          String
   phoneNumber   String
-  appointments         Appointment[]
+  appointments  Appointment[]
 }
 
 model Appointment {

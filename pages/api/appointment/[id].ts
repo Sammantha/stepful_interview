@@ -3,13 +3,33 @@ import prisma from '../../../lib/prisma';
 import { Appointment } from '../../../interfaces';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<Appointment>) {
-    const { query } = req
+    const { query, method, body } = req
     const id = parseInt(query.id as string, 10)
-    const apt = await prisma.appointment.findUnique({
-        where: {
-            id: id,
-        }
-    });
 
-    return res.status(200).json(apt)
+    switch (method) {
+        case 'GET':
+            return prisma.appointment.findUnique({
+                where: {
+                    id,
+                }
+            });
+        case 'POST':
+            const startTime = new Date(body.dateValue)
+            const endTime = new Date(startTime.getFullYear(), startTime.getMonth(), startTime.getDate(), startTime.getHours() + 2, startTime.getMinutes(), startTime.getSeconds());
+
+            return prisma.appointment.create({
+                data: {
+                    coachId: id,
+                    status: 'Available',
+                    startTime: startTime,
+                    endTime: endTime
+                },
+                include: {
+                    coach: {}
+                }
+            }).then((resp) => res.status(200).json(resp));
+
+        default:
+            break;
+    }
 };

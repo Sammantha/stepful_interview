@@ -28,6 +28,7 @@ export default function Coach() {
             <div>
                 <Link href="/" >Back to App Home</Link>
                 <button onClick={showPast}>{displayPast ? 'View Future Appointments' : 'View Past Appointments'}</button>
+                <Link href={`/appointments/add?id=${query.id}`} >Add To Availability</Link>
             </div>
 
             {displayPast ?
