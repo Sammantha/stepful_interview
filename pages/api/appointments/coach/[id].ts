@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../../lib/prisma';
 import { Appointment } from '../../../../interfaces';
 
+// All a certain coach's PAST appointments
 export default async function handler(req: NextApiRequest, res: NextApiResponse<Appointment[]>) {
     const { query } = req
     const id = parseInt(query.id as string, 10)
@@ -9,7 +10,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         where: {
             coachId: id,
             startTime: {
-                gt: new Date()
+                lt: new Date()
+            },
+            status: {
+                not: 'Available'
+            },
+            studentId: {
+                not: null
             }
         }
     });

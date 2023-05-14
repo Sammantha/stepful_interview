@@ -2,8 +2,8 @@ import useSWR from 'swr';
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
-export default function ScheduleList({ coachId }) {
-    const { data, error, isLoading } = useSWR(`/api/appointment/coach/${coachId}`, fetcher)
+export default function PastList({ coachId }) {
+    const { data, error, isLoading } = useSWR(`/api/appointments/coach/${coachId}`, fetcher)
 
     if (error) return <div>Failed to load data</div>
     if (isLoading) return <div>Loading...</div>
@@ -11,12 +11,9 @@ export default function ScheduleList({ coachId }) {
 
     return (
         <>
-            {data && data.length === 0 && <h4>You have no future appointments scheduled</h4>}
+            {data && data.length === 0 && <h4>You have no past appointments</h4>}
             {data && data.map((appointmentData) => {
-                const btnText = appointmentData.student
-                    ? `{appointmentData.student?.name}: {appointmentData.student?.phoneNumber}`
-                    : 'Available';
-
+                const btnText = `{appointmentData.student?.name}: {appointmentData.student?.phoneNumber}`;
                 return (
                     <button key={`appointment_btn_${appointmentData.id}`}>
                         {btnText} - {appointmentData.startTime}
