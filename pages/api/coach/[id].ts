@@ -1,15 +1,15 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import prisma from '../../../lib/prisma';
 import { Coach } from '../../../interfaces';
 
-const coaches: Coach[] = [
-    { id: 1, name: 'Cassandra' },
-    { id: 2, name: 'Chris' }
-]
-
-export default function handler(req: NextApiRequest, res: NextApiResponse<Coach | string>) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<Coach | string>) {
     const { query } = req
     const id = parseInt(query.id as string, 10)
-    const coach = coaches.find((c) => c.id === id)
+    const coach = await prisma.coach.findUnique({
+        where: {
+            id: id,
+        }
+    });
 
     // Coach with id exists
     return coach

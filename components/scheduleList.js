@@ -11,6 +11,7 @@ export default function ScheduleList({ coachId }) {
 
     return (
         <>
+            {data && data.length === 0 && <h4>You have no future appointments scheduled</h4>}
             {data && data.map((appointmentData) => {
                 const btnText = appointmentData.student
                     ? `{appointmentData.student?.name}: {appointmentData.student?.phoneNumber}`
