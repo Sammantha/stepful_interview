@@ -25,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                     endTime: endTime
                 },
                 include: {
-                    coach: {}
+                    coach: true
                 }
             }).then((resp) => res.status(200).json(resp));
 

@@ -5,7 +5,7 @@ import { Appointment } from '../../../../interfaces';
 // All a certain coach's PAST appointments
 export default async function handler(req: NextApiRequest, res: NextApiResponse<Appointment[]>) {
     const { query } = req
-    const id = query.id
+    const id = parseInt(query.id as string, 10)
     const apts: Appointment[] = await prisma.appointment.findMany({
         where: {
             coachId: id,
@@ -18,6 +18,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             studentId: {
                 not: null
             }
+        },
+        include: {
+            coach: true
         }
     });
 
