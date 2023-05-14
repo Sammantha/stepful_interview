@@ -14,9 +14,9 @@ export default function HomePage() {
 
     return (
         <Layout>
-            <h1>App Homepage </h1>
+            <h1>App Homepage</h1>
             <div>
-                <h2>Coaches </h2>
+                <h2>Coaches</h2>
                 {coaches && coaches.map(({ id, name }) => {
                     return <button key={`coach_button_${id}`}> <Link href={`/coaches/${id}`} > Coach {name} </Link></button >
                 })}

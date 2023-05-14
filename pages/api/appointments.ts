@@ -3,17 +3,18 @@ import prisma from '../../lib/prisma';
 import { Appointment } from '../../interfaces';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<Appointment[]>) {
-    const apts = await prisma.appointment.findUnique({
+    const apts = await prisma.appointment.findMany({
         where: {
-            id: String(params?.id),
+            startTime: {
+                gt: new Date()
+            },
+            status: 'Available'
         },
         include: {
-            author: {
-                select: { name: true },
-            },
+            coach: {},
+            student: {}
         },
     });
-    const apts = appointments.filter((c) => c.status === 'Available' && c.startTime > new Date());
 
     return res.status(200).json(apts)
 };

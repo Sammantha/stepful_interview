@@ -11,6 +11,7 @@ export default function AppointmentList() {
 
     return (
         <>
+            {data && data.length === 0 && <h4>There are no appointments currently available</h4>}
             {data && data.map(({ id, coach, startTime }) => {
                 return (
                     // div or buttton or something I can listen to to trigger a confirm modal
