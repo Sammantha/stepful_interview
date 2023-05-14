@@ -1,11 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import prisma from '../../lib/prisma';
 import { Coach } from '../../interfaces';
 
-const coaches: Coach[] = [
-    { id: 1, name: 'Cassandra' },
-    { id: 2, name: 'Chris' }
-]
-
-export default function handler(req: NextApiRequest, res: NextApiResponse<Coach[]>) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<Coach[]>) {
+    const coaches = await prisma.coach.findMany();
     return res.status(200).json(coaches)
 };

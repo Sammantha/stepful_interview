@@ -1,11 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import prisma from '../../lib/prisma';
 import { Student } from '../../interfaces';
 
-const students: Student[] = [
-    { id: 1, name: 'Samuel', phoneNumber: '4064064064' },
-    { id: 2, name: 'Sara', phoneNumber: '3103103103' }
-]
+export default async function handler(req: NextApiRequest, res: NextApiResponse<Student[]>) {
+    const students = await prisma.student.findMany();
 
-export default function handler(req: NextApiRequest, res: NextApiResponse<Student[]>) {
     return res.status(200).json(students)
 };
