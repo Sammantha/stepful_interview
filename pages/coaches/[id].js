@@ -1,28 +1,22 @@
 import Link from 'next/link';
 import Layout from '../../components/layout';
-import { getAllCoachIds, getCoachData } from '../../lib/coaches';
+import { useRouter } from 'next/router';
+import useSwr from 'swr'
 
-export async function getStaticProps({ params }) {
-    const coachData = getCoachData(params.id);
-    return {
-        props: {
-            coachData,
-        },
-    };
-}
+const fetcher = (url) => fetch(url).then((res) => res.json())
 
-export async function getStaticPaths() {
-    const paths = getAllCoachIds();
-    return {
-        paths,
-        fallback: false,
-    };
-}
+export default function Coach() {
+    const { query } = useRouter()
+    const { data } = useSwr(
+        query.id ? `/api/coach/${query.id}` : null,
+        fetcher
+    )
 
-export default function Coach({ coachData }) {
+    if (!data) return null
+
     return (
         <Layout>
-            <h1>Coach {coachData.params.name}'s Upcoming Schedule</h1>
+            <h1>Coach {data.name}'s Upcoming Schedule</h1>
             <Link href="/" >Back to App Home</Link>
         </Layout>
     );

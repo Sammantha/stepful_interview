@@ -1,28 +1,22 @@
 import Link from 'next/link';
 import Layout from '../../components/layout';
-import { getAllStudentIds, getStudentData } from '../../lib/students';
+import { useRouter } from 'next/router';
+import useSwr from 'swr'
 
-export async function getStaticProps({ params }) {
-    const studentData = getStudentData(params.id);
-    return {
-        props: {
-            studentData,
-        },
-    };
-}
+const fetcher = (url) => fetch(url).then((res) => res.json())
 
-export async function getStaticPaths() {
-    const paths = getAllStudentIds();
-    return {
-        paths,
-        fallback: false,
-    };
-}
+export default function Student() {
+    const { query } = useRouter()
+    const { data } = useSwr(
+        query.id ? `/api/student/${query.id}` : null,
+        fetcher
+    )
 
-export default function Student({ studentData }) {
+    if (!data) return null
+
     return (
         <Layout>
-            <h1>Welcome, {studentData.params.name}!</h1>
+            <h1>Welcome, {data.name}!</h1>
             <Link href="/" >Back to App Home</Link>
         </Layout>
     );
