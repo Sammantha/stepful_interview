@@ -25,10 +25,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                     endTime: endTime
                 },
                 include: {
-                    coach: true
+                    coach: true,
+                    student: true
                 }
             }).then((resp) => res.status(200).json(resp));
+        case 'PUT':
+            const studentId = parseInt(body.studentId)
 
+            return prisma.appointment.update({
+                where: {
+                    id
+                },
+                data: {
+                    status: 'Booked',
+                    student: {
+                        connect: { id: studentId },
+                    },
+                }
+            });
         default:
             break;
     }

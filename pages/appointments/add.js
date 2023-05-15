@@ -14,6 +14,7 @@ export default function AddAppointment() {
 
     const submitAvailability = async (event) => {
         event.preventDefault();
+
         const JSONdata = JSON.stringify({ dateValue: dateValue });
         const endpoint = `/api/appointment/${coachId}`;
         const options = {
@@ -23,7 +24,11 @@ export default function AddAppointment() {
             },
             body: JSONdata,
         };
-        fetch(endpoint, options).then(router.push(`/coaches/${coachId}`));
+
+        fetch(endpoint, options).then(() => {
+            window.alert(`Thanks for adding availability to your calendar!`)
+            router.push(`/coaches/${coachId}`)
+        });
     }
 
     return (

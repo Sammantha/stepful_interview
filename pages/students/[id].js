@@ -21,7 +21,7 @@ export default function Student() {
             <Link href="/" >Back to App Home</Link>
 
             <h3>Here are the curently available appointments:</h3>
-            <AppointmentList />
+            <AppointmentList studentId={query.id} />
         </Layout>
     );
 }

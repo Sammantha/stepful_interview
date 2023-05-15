@@ -14,7 +14,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             }
         },
         include: {
-            coach: true
+            coach: true,
+            student: true
         }
     });
 
