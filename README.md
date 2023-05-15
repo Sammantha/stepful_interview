@@ -9,9 +9,11 @@ A production version of this project is hosted on [Vercel](stepful-interview.ver
 2. Contact Sam for local environment vars to access the dev Database
 3. Create `.env.local` in root directory; place local env vars in there
 4. Create `.env` file in `/prisma` dir and copy contents of `.env.local` into it
-5. `npm run dev` starts the dev server on `localhost:3000`
+5. Run `npx prisma db seed` to seed the local DB with 2 coaches and 2 studens
+6. `npm run dev` starts the dev server on `localhost:3000`
 
 ## Local Prisma Commands
-`npx prisma studio` to visualize the database
-`npx prisma generate` to process Prisma schema changes
-`npx prisma db push` to push Prisma DB changes to Vercel
+- `npx prisma studio` to visualize the database
+- `npx prisma db seed` to run the seed.ts file and add 2 hard-coded coaches and students
+- `npx prisma generate` to process Prisma schema changes
+- `npx prisma db push` to push Prisma DB changes to Vercel
