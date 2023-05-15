@@ -2,7 +2,7 @@
 This project was created to answer an interview prompt from stepful.
 Please review the design docs for this project on [Google Docs](https://docs.google.com/document/d/1r2ESS_8K9tZPctrYzaRY1wmNk0qpziVGsWimzWetlh0/edit?usp=sharing)
 
-A production version of this project is hosted on [Vercel](https://stepful-interview-git-main-sammantha1.vercel.app/).
+A production version of this project is hosted on [Vercel](stepful-interview.vercel.app).
 
 ## Running This Project Locally
 1. `npm i` to install dependencies

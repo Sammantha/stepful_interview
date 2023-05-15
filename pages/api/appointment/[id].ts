@@ -11,8 +11,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             return prisma.appointment.findUnique({
                 where: {
                     id,
+                },
+                include: {
+                    student: true,
+                    coach: true
                 }
-            });
+            }).then((resp) => res.status(200).json(resp));
         case 'POST':
             const startTime = new Date(body.dateValue)
             const endTime = new Date(startTime.getFullYear(), startTime.getMonth(), startTime.getDate(), startTime.getHours() + 2, startTime.getMinutes(), startTime.getSeconds());
@@ -30,19 +34,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 }
             }).then((resp) => res.status(200).json(resp));
         case 'PUT':
-            const studentId = parseInt(body.studentId)
+            const updates = JSON.parse(body)
 
             return prisma.appointment.update({
                 where: {
                     id
                 },
                 data: {
-                    status: 'Booked',
+                    ...updates,
                     student: {
-                        connect: { id: studentId },
+                        connect: { id: updates.studentId },
                     },
+                },
+                include: {
+                    coach: true
                 }
-            });
+            }).then((resp) => res.status(200).json(resp));
         default:
             break;
     }

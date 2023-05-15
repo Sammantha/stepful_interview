@@ -1,4 +1,5 @@
 import useSWR from 'swr';
+import Link from 'next/link';
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
@@ -15,9 +16,18 @@ export default function PastList({ coachId }) {
             {data && data.map((appointmentData) => {
                 const btnText = `{appointmentData.student?.name}: {appointmentData.student?.phoneNumber}`;
                 return (
-                    <button key={`appointment_btn_${appointmentData.id}`}>
-                        {btnText} - {appointmentData.startTime}
-                    </button>
+                    <div>
+                        <div>
+                            <Link href={`/appointments/${appointmentData.id}`}>
+                                {btnText}
+                            </Link>
+                        </div>
+                        <div>
+                            Time: {appointmentData.startTime}
+                            Score: {appointmentData.satisfactionScore ? appointmentData.satisfactionScore : ''}
+                            Notes: {appointmentData.notes ? appointmentData.notes : ''}
+                        </div>
+                    </div>
                 );
             })}
         </>

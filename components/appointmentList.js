@@ -12,7 +12,10 @@ export default function AppointmentList({ studentId }) {
     const bookApt = (event) => {
         event.preventDefault()
 
-        const JSONdata = JSON.stringify({ studentId: studentId });
+        const JSONdata = JSON.stringify({
+            studentId: studentId,
+            status: 'Booked'
+        });
         const endpoint = `/api/appointment/${event.target.id}`;
         const options = {
             method: 'PUT',

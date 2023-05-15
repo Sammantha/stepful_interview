@@ -1,4 +1,5 @@
 import useSWR from 'swr';
+import Link from 'next/link';
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
@@ -18,9 +19,16 @@ export default function ScheduleList({ coachId }) {
                     : 'Available';
 
                 return (
-                    <button key={`appointment_btn_${appointmentData.id}`}>
-                        {btnText} - {appointmentData.startTime}
-                    </button>
+                    <div key={appointmentData.id}>
+                        <Link href={`/appointments/${appointmentData.id}`}>
+                            {btnText}
+                        </Link>
+                        <div>
+                            Time: {appointmentData.startTime}
+                            Score: {appointmentData?.satisfactionScore ? appointmentData.satisfactionScore : ''}
+                            Notes: {appointmentData?.notes ? appointmentData.notes : ''}
+                        </div>
+                    </div>
                 );
             })}
         </>
