@@ -32,9 +32,14 @@ export default function AppointmentList({ studentId }) {
         <>
             {data && data.length === 0 && <h4>Sorry, there are no appointments currently available</h4>}
             {data && data.map(({ id, coach, startTime }) => {
+                const start = new Date(startTime)
+                const leadingZeroMinutes = start.getMinutes() < 10 ? '0' + start.getMinutes().toString() : start.getMinutes()
+                const amPm = start.getHours() >= 12 ? 'pm' : 'am'
+                const formattedStartTime = `${start.getMonth() + 1}/${start.getDate()}/${start.getFullYear()} ${start.getHours()}:${leadingZeroMinutes}${amPm}`;
+
                 return (
                     <button onClick={bookApt} id={id} key={`appointment_btn_${id}`}>
-                        {coach.name} - {startTime}
+                        Coach {coach.name} - {formattedStartTime}
                     </button>
                 );
             })}
