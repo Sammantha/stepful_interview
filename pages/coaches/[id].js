@@ -34,14 +34,14 @@ export default function Coach() {
                 <>
                     <h3>Your past appointments:</h3>
                     <ScheduleList
-                        requestURL={`/api/appointments/coach/${query.id}`}
+                        requestURL={`/api/pastAppointments/coach/${query.id}`}
                     />
                 </>
                 :
                 <>
                     <h3>Here are all your future appointments:</h3>
                     <ScheduleList
-                        requestURL={`/api/appointment/coach/${query.id}`}
+                        requestURL={`/api/futureAppointments/coach/${query.id}`}
                     />
                 </>
             }
