@@ -1,11 +1,10 @@
 import useSWR from 'swr';
-import Link from 'next/link';
 import { Card, Typography } from '@mui/material';
 import { css } from '@emotion/css';
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
-export default function PastAppointmentList({ requestURL }) {
+export default function StudentAppointmentDetailList({ requestURL }) {
     const { data, error, isLoading } = useSWR(requestURL, fetcher)
 
     if (error) return <div>Failed to load data</div>
@@ -24,9 +23,7 @@ export default function PastAppointmentList({ requestURL }) {
 
                 return (
                     <Card className={css`padding: 10px; `} key={appointmentData.id} variant="outlined">
-                        <Link href={`/ appointments / ${appointmentData.id} `}>
-                            <Typography variant="h5">{btnText}</Typography>
-                        </Link>
+                        <Typography variant="h5">{btnText}</Typography>
                         <div>
                             <Typography variant='body1'>Time: {startTime}</Typography>
                             <Typography variant='body1'>Score: {appointmentData?.satisfactionScore ? appointmentData.satisfactionScore : ''}</Typography>

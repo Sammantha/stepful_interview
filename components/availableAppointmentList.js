@@ -2,7 +2,7 @@ import useSWR from 'swr';
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
-export default function AppointmentList({ requestURL, studentId }) {
+export default function AvailableAppointmentList({ requestURL, studentId }) {
     const { data, error, isLoading } = useSWR(requestURL, fetcher)
 
     if (error) return <div>Failed to load data</div>
