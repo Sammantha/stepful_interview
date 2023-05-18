@@ -34,7 +34,7 @@ export default function AddAppointment() {
     return (
         <Layout>
             <h1>Add Availability</h1>
-            <Link href={`/coach/${coachId}`} >Back</Link>
+            <Link href={`/coaches/${coachId}`} >Back</Link>
             <h4>Your appointment will be 2 hours long, starting at the time you enter.</h4>
             <form onSubmit={submitAvailability} method="post">
                 <label htmlFor="start_time_input">Start Time:</label>
