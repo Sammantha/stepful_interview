@@ -4,7 +4,6 @@ import Layout from '../../components/layout';
 import { useRouter } from 'next/router';
 import useSwr from 'swr'
 import ScheduleList from '../../components/scheduleList';
-import PastList from '../../components/pastList';
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
@@ -26,7 +25,7 @@ export default function Coach() {
         <Layout>
             <h1>Coach {data.name}'s Upcoming Schedule</h1>
             <div>
-                <Link href="/" >Back to App Home</Link>
+                <Link href="/" >Back</Link>
                 <button onClick={showPast}>{displayPast ? 'View Future Appointments' : 'View Past Appointments'}</button>
                 <Link href={`/appointments/add?id=${query.id}`} >Add To Availability</Link>
             </div>
@@ -34,12 +33,16 @@ export default function Coach() {
             {displayPast ?
                 <>
                     <h3>Your past appointments:</h3>
-                    <PastList coachId={query.id} />
+                    <ScheduleList
+                        requestURL={`/api/appointments/coach/${query.id}`}
+                    />
                 </>
                 :
                 <>
                     <h3>Here are all your future appointments:</h3>
-                    <ScheduleList coachId={query.id} />
+                    <ScheduleList
+                        requestURL={`/api/appointment/coach/${query.id}`}
+                    />
                 </>
             }
         </Layout>

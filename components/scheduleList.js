@@ -1,10 +1,12 @@
 import useSWR from 'swr';
 import Link from 'next/link';
+import { Card, Typography } from '@mui/material';
+import { css } from '@emotion/css';
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
-export default function ScheduleList({ coachId }) {
-    const { data, error, isLoading } = useSWR(`/api/appointment/coach/${coachId}`, fetcher)
+export default function ScheduleList({ requestURL }) {
+    const { data, error, isLoading } = useSWR(requestURL, fetcher)
 
     if (error) return <div>Failed to load data</div>
     if (isLoading) return <div>Loading...</div>
@@ -12,23 +14,28 @@ export default function ScheduleList({ coachId }) {
 
     return (
         <>
-            {data && data.length === 0 && <h4>You have no future appointments scheduled</h4>}
+            {data && data.length === 0 && <h4>No data</h4>}
             {data && data.map((appointmentData) => {
                 const btnText = appointmentData.studentId
                     ? `${appointmentData.student?.name}: ${appointmentData.student?.phoneNumber}`
                     : 'Available';
 
+                const start = new Date(appointmentData.startTime)
+                const leadingZeroMinutes = start.getMinutes() < 10 ? '0' + start.getMinutes().toString() : start.getMinutes()
+                const amPm = start.getHours() >= 12 ? 'pm' : 'am'
+                const startTime = `${start.getMonth() + 1}/${start.getDate()}/${start.getFullYear()} ${start.getHours()}:${leadingZeroMinutes} ${amPm}`;
+
                 return (
-                    <div key={appointmentData.id}>
-                        <Link href={`/appointments/${appointmentData.id}`}>
-                            {btnText}
+                    <Card className={css`padding: 10px; `} key={appointmentData.id} variant="outlined">
+                        <Link href={`/ appointments / ${appointmentData.id} `}>
+                            <Typography variant="h5">{btnText}</Typography>
                         </Link>
                         <div>
-                            Time: {appointmentData.startTime}
-                            Score: {appointmentData?.satisfactionScore ? appointmentData.satisfactionScore : ''}
-                            Notes: {appointmentData?.notes ? appointmentData.notes : ''}
+                            <Typography variant='body1'>Time: {startTime}</Typography>
+                            <Typography variant='body1'>Score: {appointmentData?.satisfactionScore ? appointmentData.satisfactionScore : ''}</Typography>
+                            <Typography variant='body1'>Notes: {appointmentData?.notes ? appointmentData.notes : ''}</Typography>
                         </div>
-                    </div>
+                    </Card>
                 );
             })}
         </>

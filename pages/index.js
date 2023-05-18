@@ -1,6 +1,10 @@
 import Link from 'next/link';
 import Layout from '../components/layout';
 import useSWR from 'swr';
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
