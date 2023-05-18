@@ -34,18 +34,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 }
             }).then((resp) => res.status(200).json(resp));
         case 'PUT':
-            const updates = JSON.parse(body)
+            const updates = body
+
+            let data = {
+                ...updates
+            }
+
+            if (updates.studentId) {
+                data = {
+                    ...data,
+                    student: {
+                        connect: { id: updates.studentId },
+                    },
+                }
+            }
 
             return prisma.appointment.update({
                 where: {
                     id
                 },
-                data: {
-                    ...updates,
-                    student: {
-                        connect: { id: updates.studentId },
-                    },
-                },
+                data,
                 include: {
                     coach: true
                 }

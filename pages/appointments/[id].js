@@ -1,66 +1,82 @@
 import Link from 'next/link';
-import Layout from '../../components/layout';
 import { useState } from 'react';
-import { useRouter } from 'next/router';
-import useSwr from 'swr'
+import Layout from '../../components/layout';
+import prisma from '../../lib/prisma';
 
-const fetcher = (url) => fetch(url).then((res) => res.json())
+export async function getServerSideProps(context) {
+    const id = parseInt(context.query.id)
 
-export default function Student() {
-    const { query } = useRouter()
-    const { data, error, isLoading } = useSwr(`/api/appointment/${query.id}`, fetcher)
+    return prisma.appointment.findUnique({
+        where: {
+            id,
+        },
+        include: {
+            student: true,
+            coach: true
+        }
+    }).then((resp) => {
+        return {
+            props: {
+                ...resp,
+                startTime: JSON.parse(JSON.stringify(resp.startTime)),
+                endTime: JSON.parse(JSON.stringify(resp.endTime))
+            }
+        }
+    });
+}
 
-    if (error) return <div>Failed to load data</div>
-    if (isLoading) return <div>Loading...</div>
-    if (!data) return null
+export default function Student(props) {
+    const [score, setScore] = useState(props.satisfactionScore || '');
+    const [notes, setNotes] = useState(props.notes || '');
 
-    // const [score, setScore] = useState(data?.satisfactionScore || '');
-    // const [notes, setNotes] = useState(data?.notes || '');
+    const onChangeScore = (event) => {
+        event.preventDefault();
+        setScore(event.target.value)
+    }
 
-    // const setSatisfactionScore = (event) => {
-    //     event.preventDefault();
-    //     setScore(event.target.value)
-    // }
+    const onChangeNotes = (event) => {
+        event.preventDefault();
+        setNotes(event.target.value)
+    }
 
-    // const submitNotes = (event) => {
-    //     event.preventDefault()
+    const submitNotes = (event) => {
+        event.preventDefault()
 
-    //     const combinedData = {
-    //         ...data,
-    //         satisfactionScore: parseInt(score),
-    //         notes: notes
-    //     }
+        const combinedData = {
+            satisfactionScore: parseInt(score),
+            notes: notes
+        }
 
-    //     const JSONdata = JSON.stringify(combinedData);
-    //     const endpoint = `/api/appointment/${event.target.id}`;
-    //     const options = {
-    //         method: 'PUT',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSONdata
-    //     };
+        const JSONdata = JSON.stringify(combinedData);
+        const endpoint = `/api/appointment/${event.target.id}`;
+        const options = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSONdata
+        };
 
-    //     fetch(endpoint, options).then(window.alert(`Thanks for submitting!`));
-    // }
+        fetch(endpoint, options).then(window.alert(`Thanks for submitting!`));
+    }
 
     return (
         <Layout>
-            <h1>Appointment with {data?.student.name}</h1>
+            <h1>Appointment with {props.student.name}</h1>
             <Link href="/" >Back to App Home</Link>
 
-            <h4>Phone Number: {data?.student.phoneNumber}</h4>
-            <h5>{data.startTime}</h5>
+            <h4>Phone Number: {props.student.phoneNumber}</h4>
+            <h5>{props.startTime}</h5>
 
-            {/* <form onSubmit={submitNotes} method="put">
+            <form onSubmit={submitNotes} id={props.id} method="put">
                 <label htmlFor='satisfactionScore'>Satisfaction Score:</label>
-                <input name='satisfactionScore' onChange={setSatisfactionScore} value={score} />
+                <input name='satisfactionScore' onChange={onChangeScore} value={score} />
                 <p>Please enter a satisfaction score from 1 to 5</p>
 
                 <label htmlFor='notes'>Notes:</label>
-                <textarea name='notes' onChange={setNotes} value={notes} />
+                <textarea name='notes' onChange={onChangeNotes} value={notes} />
                 <button type='submit'>Submit</button>
-            </form> */}
+            </form>
         </Layout>
     );
 }
